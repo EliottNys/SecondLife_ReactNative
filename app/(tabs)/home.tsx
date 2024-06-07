@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import api from "@/services/api";
@@ -11,6 +11,7 @@ type Item = {
   price: number;
   categoryId: number;
   condition: string;
+  imgSrc: string;
 };
 
 const Home = () => {
@@ -38,7 +39,12 @@ const Home = () => {
         <ThemedText>Loading...</ThemedText>
       ) : items.length > 0 ? (
         items.map((item) => (
-          <ItemCard key={item.id} title={item.title} price={item.price} />
+          <ItemCard
+            key={item.id}
+            title={item.title}
+            price={item.price}
+            imgSrc={item.imgSrc}
+          />
         ))
       ) : (
         <ThemedText>No data available</ThemedText>
@@ -49,9 +55,9 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    // flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
   },
 });
 
