@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-google-signin/google-signin": "^12.2.0",
     "@react-navigation/native": "^6.0.2",
     "@tamagui/config": "^1.100.1",
     "@tamagui/font-inter": "^1.100.1",
