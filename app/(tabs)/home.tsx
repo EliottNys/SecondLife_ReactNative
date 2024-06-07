@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import api from "@/services/api";
+import ItemCard from "@/components/ItemCard";
+
+type Item = {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  categoryId: number;
+  condition: string;
+};
 
 const Home = () => {
-  const [data, setData] = useState(null);
+  const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/items");
-        setData(response.data);
+        const response = await api.get<Item[]>("/items");
+        setItems(response.data);
       } catch (error) {
         console.error("Error fetching data from API", error);
       } finally {
@@ -23,15 +33,17 @@ const Home = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {loading ? (
         <ThemedText>Loading...</ThemedText>
-      ) : data ? (
-        <ThemedText>{JSON.stringify(data)}</ThemedText>
+      ) : items.length > 0 ? (
+        items.map((item) => (
+          <ItemCard key={item.id} title={item.title} price={item.price} />
+        ))
       ) : (
         <ThemedText>No data available</ThemedText>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
