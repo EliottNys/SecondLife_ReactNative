@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ThemedText } from "@/components/ThemedText";
 import api from "@/services/api";
@@ -18,6 +18,7 @@ type Item = {
 const Home = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -33,10 +34,15 @@ const Home = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refreshing]);
+
+  const handleRefresh = () => {
+    setRefreshing(!refreshing); // Toggle the refreshing state
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Button title="Refresh" onPress={handleRefresh} />
       {loading ? (
         <ThemedText>Loading...</ThemedText>
       ) : items.length > 0 ? (
@@ -62,6 +68,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 30,
     // flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
