@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { ThemedText } from "@/components/ThemedText";
 import api from "@/services/api";
 import ItemCard from "@/components/ItemCard";
@@ -17,6 +18,7 @@ type Item = {
 const Home = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,12 +41,17 @@ const Home = () => {
         <ThemedText>Loading...</ThemedText>
       ) : items.length > 0 ? (
         items.map((item) => (
-          <ItemCard
+          <TouchableOpacity
             key={item.id}
-            title={item.title}
-            price={item.price}
-            imgSrc={item.imgSrc}
-          />
+            onPress={() => navigation.navigate("ItemDetail", { item })}
+          >
+            <ItemCard
+              key={item.id}
+              title={item.title}
+              price={item.price}
+              imgSrc={item.imgSrc}
+            />
+          </TouchableOpacity>
         ))
       ) : (
         <ThemedText>No data available</ThemedText>
